@@ -1,8 +1,7 @@
 pipeline {
   agent any
-  slackSend failOnError:true message:"Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)" 
-  stages {
-        
+  slackSend color: "good", message: "Message from Jenkins Pipeline"
+  stages {       
     stage('Git') {
       steps {
         git 'https://github.com/Sateesh2/simple-node-js-react-npm-app.git'
@@ -23,9 +22,4 @@ pipeline {
       }
     }
   }
-  post {
-    failure {
-        slackSend failOnError:true message:"Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-    }
-}
 }
