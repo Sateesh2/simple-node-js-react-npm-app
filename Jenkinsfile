@@ -4,7 +4,7 @@ pipeline {
   stages {       
     stage('Git') {
       steps {
-        slackSend color: "good", message: "Started build, fetching repo from github"
+        slackSend color: "good", message: "Started build, fetching repo from github ${$.before}"
         git 'https://github.com/Sateesh2/simple-node-js-react-npm-app.git'
       }
     }
