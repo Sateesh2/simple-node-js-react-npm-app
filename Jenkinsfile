@@ -2,8 +2,8 @@ pipeline {
   agent any
   stages {       
     stage('Git') {
-      slackSend color: "good", message: "Message from Jenkins Pipeline"
       steps {
+        slackSend color: "good", message: "Message from Jenkins Pipeline"
         git 'https://github.com/Sateesh2/simple-node-js-react-npm-app.git'
       }
     }
