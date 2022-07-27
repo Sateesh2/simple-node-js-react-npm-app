@@ -4,15 +4,19 @@ pipeline {
   stages {       
     stage('Git') {
       steps {
-        slackSend color: "good", message: "Message from Jenkins Pipeline"
+        slackSend color: "good", message: "Started build, fetching repo from github"
         git 'https://github.com/Sateesh2/simple-node-js-react-npm-app.git'
       }
     }
      
     stage('Build') {
       steps {
-        sh 'npm install'
-         sh 'npm run build'
+        try {
+          sh 'npm install'
+        } catch (Exception e) {
+            slackSend failOnError:true,color: "#ff0000", message:"npm install failed ${e.toString()} - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
+        sh 'npm run build'
       }
     }  
     
@@ -26,7 +30,7 @@ pipeline {
 
     post {
       failure {
-        slackSend failOnError:true, message:"Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        slackSend failOnError:true,color: "#ff0000", message:"Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
       }
     }
 
