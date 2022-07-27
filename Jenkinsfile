@@ -11,10 +11,12 @@ pipeline {
      
     stage('Build') {
       steps {
-        try {
-          sh 'npm install'
-        } catch (Exception e) {
-            slackSend failOnError:true,color: "#ff0000", message:"npm install failed ${e.toString()} - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        script {
+          try {
+            sh 'npm install'
+          } catch (Exception e) {
+              slackSend failOnError:true,color: "#ff0000", message:"npm install failed ${e.toString()} - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+          }
         }
         sh 'npm run build'
       }
